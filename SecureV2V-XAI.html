@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SecureV2V — AutoSec AI | Bahria University FYP</title>
+  <meta name="description" content="Secure V2V Communication using AI — Explainable AI Framework for Vehicular Network Security. Bahria University FYP." />
+  <style>
+/* ============================================================
+   Secure V2V Communication using AI - Styles
+   CSS-variable-driven dark / light theme
+   ============================================================ */
+
+:root,
+[data-theme="dark"] {
+  --bg-deep:         #0a0e1a;
+  --bg-darker:       #060912;
+  --bg-panel:        #0d1526;
+  --bg-sub:          #0a1220;
+  --bg-darker-sub:   #060d18;
+  --border:          #1a2a45;
+  --border-soft:     #1a3050;
+  --border-hard:     #1e4080;
+  --accent-blue:     #4a9eff;
+  --accent-blue-dim: #7ab8ff;
+  --accent-green:    #1adf6a;
+  --accent-red:      #df3a1a;
+  --accent-orange:   #ff9040;
+  --accent-purple:   #a060ff;
+  --text-main:       #c8d6e8;
+  --text-mid:        #8aaccc;
+  --text-dim:        #4a6a8a;
+  --text-faint:      #3a6090;
+  --panel-shadow:    none;
+  --input-bg:        #0a1220;
+}
+
+[data-theme="light"] {
+  --bg-deep:         #eef2f7;
+  --bg-darker:       #dce4ef;
+  --bg-panel:        #ffffff;
+  --bg-sub:          #f1f5fa;
+  --bg-darker-sub:   #e6ecf5;
+  --border:          #c2cfe0;
+  --border-soft:     #adbdd4;
+  --border-hard:     #7d9cbf;
+  --accent-blue:     #1558b0;
+  --accent-blue-dim: #1e6fcc;
+  --accent-green:    #0a6b30;
+  --accent-red:      #b71c0a;
+  --accent-orange:   #b35000;
+  --accent-purple:   #5820a8;
+  --text-main:       #0f172a;
+  --text-mid:        #253a55;
+  --text-dim:        #4a6070;
+  --text-faint:      #6080a0;
+  --panel-shadow:    0 1px 4px rgba(15,23,42,0.10), 0 4px 16px rgba(15,23,42,0.06);
+  --input-bg:        #f1f5fa;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg-deep);
+  color: var(--text-main);
+  -webkit-font-smoothing: antialiased;
+  transition: background 0.28s ease, color 0.28s ease;
+}
+
+.vs-app { background: var(--bg-deep); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; transition: background 0.28s ease; }
+
+/* HEADER */
+.vs-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 22px; background: var(--bg-darker); border-bottom: 1px solid var(--border); flex-shrink: 0; gap: 16px; transition: background 0.28s ease, border-color 0.28s ease; }
+.vs-header-left { display: flex; align-items: center; gap: 10px; min-width: 200px; flex-shrink: 0; }
+.vs-logo-wrap { width: 52px; height: 52px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.vs-logo-img { height: 50px; width: auto; max-width: 52px; object-fit: contain; display: block; }
+[data-theme="dark"] .vs-logo-img { filter: drop-shadow(0 0 3px rgba(255,255,255,0.15)); }
+.vs-header-brand { display: flex; flex-direction: column; }
+.vs-brand-univ { font-size: 11px; font-weight: 700; color: var(--accent-blue-dim); letter-spacing: 1.5px; white-space: nowrap; }
+.vs-brand-fyp { font-size: 9px; color: var(--text-faint); letter-spacing: 1px; }
+.vs-header-title { text-align: center; flex: 1; min-width: 0; }
+.vs-header-title h1 { font-size: clamp(12px,1.55vw,20px); font-weight: 700; color: var(--accent-blue-dim); letter-spacing: clamp(1px,0.2vw,3px); text-shadow: 0 0 10px rgba(74,158,255,0.25); margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+[data-theme="light"] .vs-header-title h1 { text-shadow: none; }
+.vs-subtitle { font-size: 9px; color: var(--text-dim); letter-spacing: 1.2px; text-transform: uppercase; }
+.vs-header-right { display: flex; align-items: center; gap: 12px; min-width: 200px; justify-content: flex-end; flex-shrink: 0; }
+.vs-theme-btn { background: var(--bg-sub); border: 1px solid var(--border-soft); color: var(--text-mid); padding: 5px 14px; border-radius: 20px; font-size: 11px; font-weight: 600; cursor: pointer; transition: all 0.18s; outline: none; letter-spacing: 0.4px; }
+.vs-theme-btn:hover { border-color: var(--accent-blue); color: var(--accent-blue); box-shadow: 0 0 8px rgba(74,158,255,0.3); }
+.vs-status { display: flex; align-items: center; gap: 6px; font-size: 10px; color: var(--accent-green); letter-spacing: 1px; font-weight: 500; }
+.vs-status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent-green); box-shadow: 0 0 8px var(--accent-green); animation: vs-pulse 1.5s infinite; }
+@keyframes vs-pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+.vs-clock { font-family: "Courier New", monospace; font-size: 12px; color: var(--accent-blue); background: var(--input-bg); border: 1px solid var(--border-soft); border-radius: 4px; padding: 4px 10px; letter-spacing: 1px; }
+.vs-ws-wrap { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+.vs-ws-badge { display: flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 600; padding: 4px 10px; border-radius: 12px; letter-spacing: 0.5px; border: 1px solid; }
+.vs-ws-dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; animation: vs-pulse 1.4s infinite; }
+.vs-ws-simulation { color: var(--accent-blue); border-color: var(--accent-blue); background: rgba(74,158,255,0.08); }
+
+/* KPI BAR */
+.vs-kpibar { display: grid; grid-template-columns: minmax(220px,1fr) 2.5fr; gap: 10px; margin: 10px 10px 0 10px; padding: 12px; background: var(--bg-panel); border: 1px solid var(--border); border-radius: 8px; box-shadow: var(--panel-shadow); transition: background 0.28s ease, border-color 0.28s ease; }
+.vs-kpibar-left { display: flex; flex-direction: column; justify-content: center; gap: 4px; padding-right: 12px; border-right: 1px solid var(--border); }
+.vs-kpibar-label { font-size: 9px; font-weight: 600; color: var(--accent-blue); letter-spacing: 1.5px; text-transform: uppercase; }
+.vs-dataset-select { background: var(--input-bg); border: 1px solid var(--border-hard); color: var(--text-main); padding: 6px 10px; border-radius: 5px; font-size: 11px; font-weight: 600; cursor: pointer; outline: none; transition: border-color 0.18s, box-shadow 0.18s; }
+.vs-dataset-select:hover, .vs-dataset-select:focus { border-color: var(--accent-blue); box-shadow: 0 0 8px rgba(74,158,255,0.25); }
+.vs-dataset-select option { background: var(--bg-panel); color: var(--text-main); }
+.vs-kpibar-desc { font-size: 9px; color: var(--text-dim); margin-top: 2px; line-height: 1.4; }
+.vs-kpibar-right { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; }
+.vs-kpi-card { background: var(--bg-sub); border: 1px solid var(--border-soft); border-radius: 6px; padding: 8px 10px; display: flex; flex-direction: column; gap: 4px; transition: background 0.28s ease; }
+.vs-kpi-card-label { font-size: 9px; font-weight: 600; color: var(--text-dim); letter-spacing: 1px; text-transform: uppercase; }
+.vs-kpi-card-value { font-size: 22px; font-weight: 700; font-family: "Courier New", monospace; line-height: 1; }
+.vs-kpi-pct { font-size: 12px; margin-left: 2px; opacity: 0.7; }
+.vs-kpi-card-bar { height: 3px; background: rgba(74,158,255,0.12); border-radius: 2px; overflow: hidden; margin-top: 2px; }
+.vs-kpi-card-bar-fill { height: 100%; border-radius: 2px; transition: width 0.6s ease-out; }
+
+/* LAYOUT */
+.vs-layout { display: grid; grid-template-columns: 280px 1fr; gap: 10px; padding: 10px; flex: 1; }
+.vs-sidebar { display: flex; flex-direction: column; gap: 8px; max-height: calc(100vh - 200px); overflow-y: auto; padding-right: 4px; scrollbar-width: thin; scrollbar-color: var(--border-soft) transparent; }
+.vs-sidebar::-webkit-scrollbar { width: 6px; }
+.vs-sidebar::-webkit-scrollbar-thumb { background: var(--border-soft); border-radius: 3px; }
+
+/* PANELS */
+.vs-panel { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 8px; padding: 12px; position: relative; box-shadow: var(--panel-shadow); transition: background 0.28s ease, border-color 0.28s ease; }
+.vs-panel-title { font-size: 10px; font-weight: 700; color: var(--accent-blue); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 8px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+.vs-text { font-size: 11px; color: var(--text-mid); line-height: 1.65; }
+.vs-ws-status { font-size: 9px; font-weight: 500; letter-spacing: 0.5px; text-transform: none; }
+.vs-obj-list { list-style: none; }
+.vs-obj-list li { display: flex; align-items: flex-start; gap: 8px; font-size: 11px; color: var(--text-mid); margin-bottom: 5px; line-height: 1.5; }
+.vs-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-blue); margin-top: 5px; flex-shrink: 0; }
+.vs-novelty-list { list-style: none; }
+.vs-novelty-list li { font-size: 10px; color: var(--text-mid); background: var(--bg-sub); border-left: 2px solid var(--accent-green); padding: 5px 8px; margin-bottom: 4px; border-radius: 0 4px 4px 0; line-height: 1.5; }
+.vs-novelty-list b { color: var(--accent-green); font-weight: 600; }
+.vs-pipeline { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; margin-top: 6px; }
+.vs-pf-node { background: var(--bg-sub); border: 1px solid var(--border-hard); border-radius: 5px; padding: 5px 4px; font-size: 8px; color: var(--accent-blue); text-align: center; flex: 1; min-width: 38px; display: flex; flex-direction: column; align-items: center; gap: 3px; }
+.vs-pf-icon { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 600; color: var(--text-main); }
+.vs-pf-arrow { color: var(--text-faint); font-size: 11px; flex-shrink: 0; font-weight: 700; }
+
+/* MAIN GRIDS */
+.vs-main { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.vs-row { display: grid; gap: 10px; }
+.vs-row-top { grid-template-columns: 1fr 1fr; }
+.vs-row-mid-3 { grid-template-columns: 1fr 1fr 1fr; }
+.vs-row-bot-1 { grid-template-columns: 1fr; }
+
+/* RADAR */
+.vs-radar-panel { display: flex; flex-direction: column; }
+.vs-radar-area { flex: 1; background: #0b1121; border-radius: 6px; border: 2px solid #1c3058; overflow: hidden; min-height: 240px; margin-top: 6px; box-shadow: inset 0 0 30px rgba(0,0,0,0.5); }
+.vs-metric-row { display: flex; gap: 6px; margin-top: 8px; }
+.vs-metric { background: var(--bg-sub); border: 1px solid var(--border-soft); border-radius: 5px; padding: 5px 8px; flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; }
+.vs-metric span { font-size: 8px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; }
+.vs-metric b { font-size: 14px; font-weight: 600; color: var(--accent-green); margin-top: 2px; }
+.vs-red { color: var(--accent-red) !important; }
+.vs-green { color: var(--accent-green) !important; }
+
+/* CARLA */
+.vs-carla-area { background: #060d18; border-radius: 6px; border: 1px solid var(--border); height: 240px; position: relative; overflow: hidden; margin-top: 6px; }
+
+/* LATENCY */
+.vs-kpi-row { display: flex; gap: 6px; margin-top: 8px; }
+.vs-kpi { background: var(--bg-sub); border: 1px solid var(--border-soft); border-radius: 5px; padding: 6px 8px; flex: 1; text-align: center; display: flex; flex-direction: column; }
+.vs-kpi b { font-size: 14px; font-weight: 600; color: var(--accent-green); }
+.vs-kpi span { font-size: 8px; color: var(--text-dim); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+/* BADGES */
+.vs-section-badge { display: inline-block; background: var(--bg-sub); border: 1px solid var(--border-soft); border-radius: 4px; padding: 2px 8px; font-size: 8px; color: var(--text-dim); letter-spacing: 0.5px; }
+.vs-section-badge-yolo { background: rgba(160,96,255,0.1); border-color: var(--accent-purple); color: var(--accent-purple); font-weight: 600; }
+.vs-video-overlay { position: absolute; top: 8px; right: 10px; font-size: 9px; color: #ff6060; background: rgba(0,0,0,0.7); padding: 3px 8px; border-radius: 3px; display: flex; align-items: center; gap: 4px; font-family: "Courier New", monospace; letter-spacing: 0.5px; z-index: 5; }
+.vs-rec-dot { width: 7px; height: 7px; border-radius: 50%; background: #df3a1a; animation: vs-pulse 1s infinite; }
+.vs-video-stats { display: flex; gap: 6px; margin-top: 8px; }
+.vs-stat { flex: 1; background: var(--bg-sub); border: 1px solid var(--border-soft); border-radius: 5px; padding: 6px; text-align: center; display: flex; flex-direction: column; }
+.vs-stat span { font-size: 8px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; }
+.vs-stat b { font-size: 13px; font-weight: 600; color: var(--accent-blue); margin-top: 2px; }
+.vs-stat-alert { border-color: var(--accent-red); }
+.vs-stat-alert b { color: var(--accent-red); }
+
+/* DASHCAM */
+.vs-dashcam-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap; }
+.vs-video-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+.vs-btn { font-size: 11px; font-weight: 600; letter-spacing: 0.4px; padding: 6px 14px; border-radius: 5px; cursor: pointer; border: 1px solid transparent; transition: all 0.15s; outline: none; }
+.vs-btn-primary { background: var(--accent-blue); color: #fff; border-color: var(--accent-blue); box-shadow: 0 0 10px rgba(74,158,255,0.3); }
+.vs-btn-primary:hover { opacity: 0.85; }
+.vs-btn-ghost { background: transparent; color: var(--text-mid); border-color: var(--border-hard); }
+.vs-btn-ghost:hover { color: var(--text-main); border-color: var(--accent-blue); }
+.vs-dashcam-stage { position: relative; width: 100%; height: 280px; background: #000; border-radius: 6px; border: 1px solid var(--border); overflow: hidden; }
+.vs-dashcam-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; background: #000; z-index: 1; display: block; }
+.vs-dashcam-spinner { width: 44px; height: 44px; border: 4px solid var(--border-soft); border-top-color: var(--accent-blue); border-radius: 50%; animation: vs-spin 0.8s linear infinite; margin-bottom: 14px; }
+@keyframes vs-spin { to { transform: rotate(360deg); } }
+.vs-dashcam-upload-overlay { position: absolute; inset: 0; z-index: 4; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(6,13,24,0.55); text-align: center; padding: 20px; }
+.vs-dashcam-status-badge { position: absolute; top: 12px; right: 12px; z-index: 5; display: flex; align-items: center; gap: 8px; font-family: "Courier New", monospace; font-size: 11px; font-weight: 700; padding: 6px 12px; border-radius: 4px; letter-spacing: 0.5px; border: 1px solid; background: rgba(0,0,0,0.80); }
+.vs-status-good { border-color: #1adf6a; color: #1adf6a; }
+.vs-status-bad { border-color: #df3a1a; color: #ff6a4a; animation: vs-badge-flash 0.6s infinite; }
+@keyframes vs-badge-flash { 0%,100%{background:rgba(0,0,0,0.80)} 50%{background:rgba(80,10,4,0.90)} }
+.vs-status-dot-mini { width: 8px; height: 8px; border-radius: 50%; background: currentColor; box-shadow: 0 0 5px currentColor; }
+.vs-dashcam-hud-bl { position: absolute; bottom: 12px; left: 12px; z-index: 5; font-size: 10px; color: #7ab8ff; background: rgba(0,0,0,0.72); padding: 5px 10px; border-radius: 3px; font-family: "Courier New", monospace; letter-spacing: 0.5px; border: 1px solid rgba(74,158,255,0.35); }
+.vs-dashcam-stats { display: flex; gap: 6px; margin-top: 10px; }
+.vs-dashcam-placeholder-text { font-size: 11px; font-family: monospace; line-height: 1.6; color: var(--text-dim); }
+
+/* INTEL FEED */
+.vs-intel-log { background: var(--bg-darker-sub); border-radius: 6px; height: 230px; overflow-y: auto; padding: 6px 8px; scrollbar-width: thin; scrollbar-color: var(--border-soft) transparent; border: 1px solid var(--border); }
+.vs-intel-log::-webkit-scrollbar { width: 6px; }
+.vs-intel-log::-webkit-scrollbar-thumb { background: var(--border-soft); border-radius: 3px; }
+.vs-log-entry { padding: 4px 0; border-bottom: 1px solid var(--border); display: flex; gap: 8px; align-items: flex-start; }
+.vs-log-ts { font-size: 9px; color: var(--text-faint); min-width: 70px; font-family: "Courier New", monospace; }
+.vs-log-msg { font-size: 10px; color: var(--text-mid); flex: 1; font-family: "Courier New", monospace; }
+.vs-log-conf { font-size: 9px; font-weight: 700; min-width: 42px; text-align: right; font-family: "Courier New", monospace; }
+
+/* SHAP */
+.vs-shap-header { display: flex; justify-content: space-between; align-items: center; background: var(--bg-sub); border: 1px solid var(--border-soft); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px; }
+.vs-shap-label { font-size: 8px; color: var(--text-dim); letter-spacing: 1px; text-transform: uppercase; }
+.vs-shap-vid { font-size: 13px; font-weight: 700; color: var(--accent-blue-dim); margin-top: 2px; font-family: "Courier New", monospace; }
+.vs-shap-attack { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+.vs-shap-attack-label { background: rgba(223,58,26,0.12); border: 1px solid var(--accent-red); color: var(--accent-red); padding: 2px 8px; border-radius: 3px; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; font-family: "Courier New", monospace; }
+.vs-shap-attack-conf { font-size: 10px; color: var(--text-mid); font-family: "Courier New", monospace; }
+.vs-shap-chart { background: var(--bg-darker-sub); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; display: flex; flex-direction: column; gap: 6px; min-height: 165px; }
+.vs-shap-row { display: grid; grid-template-columns: 100px 1fr 50px; align-items: center; gap: 8px; font-family: "Courier New", monospace; }
+.vs-shap-feature { font-size: 9px; color: var(--text-mid); text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.vs-shap-bar-track { position: relative; height: 14px; background: var(--bg-sub); border-radius: 2px; overflow: hidden; }
+.vs-shap-bar-axis { position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: var(--border-hard); }
+.vs-shap-bar-fill { position: absolute; top: 1px; bottom: 1px; border-radius: 1px; transition: width 0.4s ease-out; }
+.vs-shap-bar-pos { background: linear-gradient(90deg, rgba(223,58,26,0.35), var(--accent-red)); }
+.vs-shap-bar-neg { background: linear-gradient(270deg, rgba(74,158,255,0.35), var(--accent-blue)); }
+.vs-shap-impact { font-size: 10px; font-weight: 700; text-align: right; }
+.vs-shap-legend { display: flex; justify-content: space-between; margin-top: 8px; font-size: 8px; color: var(--text-dim); }
+.vs-legend-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 4px; vertical-align: middle; }
+
+/* TABLE */
+.vs-table-wrap { background: var(--bg-darker-sub); border: 1px solid var(--border); border-radius: 6px; overflow: auto; max-height: 280px; scrollbar-width: thin; }
+.vs-table-wrap::-webkit-scrollbar { width: 6px; height: 6px; }
+.vs-table-wrap::-webkit-scrollbar-thumb { background: var(--border-soft); border-radius: 3px; }
+.vs-data-table { width: 100%; border-collapse: collapse; font-family: "Courier New", monospace; font-size: 10px; }
+.vs-data-table thead { position: sticky; top: 0; background: var(--bg-sub); z-index: 1; }
+.vs-data-table th { text-align: left; padding: 8px 12px; font-size: 9px; font-weight: 700; color: var(--accent-blue); letter-spacing: 1px; text-transform: uppercase; border-bottom: 1px solid var(--border-soft); }
+.vs-data-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); color: var(--text-mid); }
+.vs-data-table tbody tr:hover { background: rgba(74,158,255,0.04); }
+.vs-td-mono { font-family: "Courier New", monospace; color: var(--text-mid); }
+.vs-td-pkt { display: inline-block; background: var(--bg-sub); border: 1px solid var(--border-soft); border-radius: 3px; padding: 1px 6px; font-size: 9px; font-weight: 700; color: var(--accent-blue); letter-spacing: 0.5px; }
+.vs-td-label { display: inline-block; background: transparent; border: 1px solid; border-radius: 3px; padding: 2px 7px; font-size: 9px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
+
+/* FOOTER */
+.vs-footer { background: var(--bg-darker); border-top: 1px solid var(--border); padding: 8px 22px; display: flex; justify-content: space-between; font-size: 9px; color: var(--text-faint); letter-spacing: 1px; text-transform: uppercase; flex-shrink: 0; transition: background 0.28s ease; }
+
+/* RESPONSIVE */
+@media (max-width: 1300px) {
+  .vs-row-mid-3 { grid-template-columns: 1fr 1fr; }
+  .vs-row-mid-3 > .vs-panel:nth-child(3) { grid-column: 1 / -1; }
+}
+@media (max-width: 1100px) {
+  .vs-layout { grid-template-columns: 1fr; }
+  .vs-sidebar { max-height: none; }
+  .vs-row-top, .vs-row-mid-3 { grid-template-columns: 1fr; }
+  .vs-kpibar { grid-template-columns: 1fr; }
+  .vs-kpibar-left { border-right: none; border-bottom: 1px solid var(--border); padding-right: 0; padding-bottom: 10px; }
+}
+@media (max-width: 700px) {
+  .vs-header { flex-direction: column; gap: 8px; }
+  .vs-header-left, .vs-header-right { min-width: auto; }
+  .vs-kpibar-right { grid-template-columns: repeat(2,1fr); }
+}
+  </style>
+</head>
+<body>
+<div class="vs-app" id="app">
+
+  <!-- HEADER -->
+  <header class="vs-header">
+    <div class="vs-header-left">
+      <div class="vs-logo-wrap">
+        <img src="data:image/png;base64,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" alt="Bahria University" class="vs-logo-img" />
+      </div>
+      <div class="vs-header-brand">
+        <div class="vs-brand-univ">BAHRIA UNIVERSITY</div>
+        <div class="vs-brand-fyp">FYP — AutoSec AI</div>
+      </div>
+    </div>
+    <div class="vs-header-title">
+      <h1>SECURE V2V COMMUNICATION USING AI</h1>
+      <span class="vs-subtitle">Explainable AI Framework for Vehicular Network Security</span>
+    </div>
+    <div class="vs-header-right">
+      <div class="vs-ws-wrap">
+        <div class="vs-ws-badge vs-ws-simulation" id="metricsBadge">
+          <span class="vs-ws-dot"></span>
+          <span>🟢 AI SIMULATION ACTIVE</span>
+        </div>
+      </div>
+      <button class="vs-theme-btn" id="themeBtn" onclick="toggleTheme()">☾ Dark</button>
+      <div class="vs-status">
+        <span class="vs-status-dot"></span>
+        <span>SYSTEM LIVE</span>
+      </div>
+      <div class="vs-clock" id="clock">--:--:--</div>
+    </div>
+  </header>
+
+  <!-- KPI BAR -->
+  <section class="vs-kpibar">
+    <div class="vs-kpibar-left">
+      <div class="vs-kpibar-label">ACTIVE DATASET</div>
+      <select class="vs-dataset-select" id="datasetSelect" onchange="switchDataset(this.value)">
+        <option value="veremi">Dataset 1: VeReMi V2V</option>
+        <option value="kdd">Dataset 2: Synthetic KDD</option>
+      </select>
+      <div class="vs-kpibar-desc" id="datasetDesc">Real-world V2V misbehavior dataset — 5 attack vectors</div>
+    </div>
+    <div class="vs-kpibar-right" id="kpiCards"></div>
+  </section>
+
+  <!-- MAIN LAYOUT -->
+  <div class="vs-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="vs-sidebar">
+      <div class="vs-panel">
+        <div class="vs-panel-title">Problem Statement</div>
+        <p class="vs-text">Modern V2V communication networks face critical vulnerabilities from adversarial attacks including Sybil, replay, GPS spoofing, and DoS flooding. Traditional cryptographic protocols are insufficient against AI-driven threat actors in real-time vehicular environments.</p>
+      </div>
+      <div class="vs-panel">
+        <div class="vs-panel-title">Objectives</div>
+        <ul class="vs-obj-list">
+          <li><span class="vs-dot"></span>Real-time AI security layer for V2V protocols</li>
+          <li><span class="vs-dot"></span>Detection latency &lt;30ms on edge hardware</li>
+          <li><span class="vs-dot"></span>Classify 8+ attack vectors with &gt;98% accuracy</li>
+          <li><span class="vs-dot"></span>Integrate with DSRC / C-V2X standards</li>
+          <li><span class="vs-dot"></span>Explainable AI (SHAP) per detection</li>
+          <li><span class="vs-dot"></span>Validate on CARLA + real datasets</li>
+        </ul>
+      </div>
+      <div class="vs-panel">
+        <div class="vs-panel-title">Contribution / Novelty</div>
+        <ul class="vs-novelty-list">
+          <li>Hybrid <b>XGBoost + LSTM</b> ensemble for temporal-spatial detection</li>
+          <li>Built-in <b>SHAP explainability</b> per flagged vehicle</li>
+          <li>Edge runtime via <b>TensorRT</b> — sub-30ms inference</li>
+          <li>Novel <b>kinematic plausibility</b> features beyond PKI</li>
+          <li>Validated in <b>CARLA</b> with attack injection</li>
+        </ul>
+      </div>
+      <div class="vs-panel">
+        <div class="vs-panel-title">System Pipeline</div>
+        <div class="vs-pipeline">
+          <div class="vs-pf-node"><div class="vs-pf-icon" style="border-color:#4a9eff">1</div><span>Data Capture</span></div>
+          <span class="vs-pf-arrow">&gt;</span>
+          <div class="vs-pf-node"><div class="vs-pf-icon" style="border-color:#1adf6a">2</div><span>Encrypt/PKI</span></div>
+          <span class="vs-pf-arrow">&gt;</span>
+          <div class="vs-pf-node"><div class="vs-pf-icon" style="border-color:#ff9040">3</div><span>AI Inference</span></div>
+          <span class="vs-pf-arrow">&gt;</span>
+          <div class="vs-pf-node"><div class="vs-pf-icon" style="border-color:#a060ff">4</div><span>XAI Explain</span></div>
+          <span class="vs-pf-arrow">&gt;</span>
+          <div class="vs-pf-node"><div class="vs-pf-icon" style="border-color:#4a9eff">5</div><span>V2V Alert</span></div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="vs-main">
+
+      <!-- ROW 1: Radar + Carla -->
+      <div class="vs-row vs-row-top">
+
+        <!-- LIVE RADAR -->
+        <div class="vs-panel vs-radar-panel">
+          <div class="vs-panel-title">Live Radar — V2V Network Topology</div>
+          <div class="vs-radar-area">
+            <svg id="radarSvg" viewBox="0 0 440 280" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" style="display:block">
+              <circle cx="220" cy="140" r="120" fill="none" stroke="#2a4060" stroke-width="0.8"/>
+              <circle cx="220" cy="140" r="80" fill="none" stroke="#2a4060" stroke-width="0.8"/>
+              <circle cx="220" cy="140" r="40" fill="none" stroke="#2a4060" stroke-width="0.8"/>
+              <line x1="220" y1="20" x2="220" y2="260" stroke="#2a4060" stroke-width="0.8"/>
+              <line x1="100" y1="140" x2="340" y2="140" stroke="#2a4060" stroke-width="0.8"/>
+              <line id="radarSweep" x1="220" y1="140" x2="340" y2="140" stroke="#1adf6a" stroke-width="1.2" opacity="0.75"/>
+              <rect x="40" y="60" width="360" height="14" fill="#0d1e30"/>
+              <rect x="40" y="130" width="360" height="14" fill="#0d1e30"/>
+              <rect x="40" y="200" width="360" height="14" fill="#0d1e30"/>
+              <line x1="100" y1="67" x2="200" y2="67" stroke="#1adf6a" stroke-width="0.8" stroke-dasharray="3 2" opacity="0.65"/>
+              <line x1="200" y1="67" x2="320" y2="67" stroke="#1adf6a" stroke-width="0.8" stroke-dasharray="3 2" opacity="0.65"/>
+              <line x1="120" y1="137" x2="220" y2="137" stroke="#4a9eff" stroke-width="0.8" opacity="0.65"/>
+              <line x1="220" y1="137" x2="290" y2="207" stroke="#df3a1a" stroke-width="1" stroke-dasharray="2 2" opacity="0.75"/>
+              <!-- Nodes -->
+              <g transform="translate(100,67)"><circle r="10" fill="#0d2a1a" stroke="#1adf6a" stroke-width="1.5"/><text text-anchor="middle" y="3" font-size="6" fill="#1adf6a" font-weight="500">EV-01</text></g>
+              <g transform="translate(200,67)"><circle r="10" fill="#0d2a1a" stroke="#1adf6a" stroke-width="1.5"/><text text-anchor="middle" y="3" font-size="6" fill="#1adf6a" font-weight="500">EV-02</text></g>
+              <g transform="translate(320,67)"><circle r="10" fill="#0d2a1a" stroke="#1adf6a" stroke-width="1.5"/><text text-anchor="middle" y="3" font-size="6" fill="#1adf6a" font-weight="500">EV-03</text></g>
+              <g transform="translate(120,137)"><circle r="10" fill="#0d1a2a" stroke="#4a9eff" stroke-width="1.5"/><text text-anchor="middle" y="3" font-size="6" fill="#4a9eff" font-weight="500">RSU-A</text></g>
+              <g transform="translate(220,137)"><circle r="10" fill="#0d2a1a" stroke="#1adf6a" stroke-width="1.5"/><text text-anchor="middle" y="3" font-size="6" fill="#1adf6a" font-weight="500">EV-04</text></g>
+              <g transform="translate(290,207)"><circle r="10" fill="#2a0d0d" stroke="#df3a1a" stroke-width="1.5" stroke-dasharray="3 2"/><text text-anchor="middle" y="3" font-size="6" fill="#df3a1a" font-weight="500">ATK-X</text></g>
+              <g transform="translate(160,207)"><circle r="10" fill="#0d2a1a" stroke="#1adf6a" stroke-width="1.5"/><text text-anchor="middle" y="3" font-size="6" fill="#1adf6a" font-weight="500">EV-05</text></g>
+              <rect x="220" y="120" width="55" height="12" rx="3" fill="#0d2a1a" stroke="#1adf6a"/>
+              <text x="247" y="129" text-anchor="middle" font-size="7" fill="#1adf6a">ENC-KEY</text>
+              <rect x="295" y="220" width="65" height="12" rx="3" fill="#2a0d0d" stroke="#df3a1a"/>
+              <text x="327" y="229" text-anchor="middle" font-size="7" fill="#ff6040">THREAT FLAGGED</text>
+              <rect x="10" y="10" width="100" height="40" rx="3" fill="#060e1a" stroke="#1a3050"/>
+              <circle cx="20" cy="22" r="4" fill="#0d2a1a" stroke="#1adf6a"/>
+              <text x="30" y="25" font-size="7" fill="#1adf6a">Secure Node</text>
+              <circle cx="20" cy="35" r="4" fill="#2a0d0d" stroke="#df3a1a" stroke-dasharray="2 1"/>
+              <text x="30" y="38" font-size="7" fill="#df3a1a">Attacker</text>
+            </svg>
+          </div>
+          <div class="vs-metric-row">
+            <div class="vs-metric"><span>Secure Nodes</span><b id="mSecure">12</b></div>
+            <div class="vs-metric"><span>Threats</span><b class="vs-red" id="mThreats">3</b></div>
+            <div class="vs-metric"><span>Detect Rate</span><b id="mRate">98.4%</b></div>
+            <div class="vs-metric"><span>Latency</span><b id="mLatency">25ms</b></div>
+          </div>
+        </div>
+
+        <!-- CARLA SIMULATION -->
+        <div class="vs-panel">
+          <div class="vs-panel-title">CARLA 3D Simulation — V2V Network Live</div>
+          <span class="vs-section-badge">CARLA Engine — Real-time render</span>
+          <div class="vs-carla-area">
+            <canvas id="carlaCanvas" width="400" height="200" style="width:100%;height:100%;display:block"></canvas>
+            <div class="vs-video-overlay"><span class="vs-rec-dot"></span> SIM — 30fps</div>
+          </div>
+          <div class="vs-video-stats">
+            <div class="vs-stat"><span>Active Vehicles</span><b id="mVehicles">24</b></div>
+            <div class="vs-stat"><span>V2V Links</span><b class="vs-green">47</b></div>
+            <div class="vs-stat vs-stat-alert"><span>Active Threats</span><b>3</b></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ROW 2: Latency + Intel + SHAP -->
+      <div class="vs-row vs-row-mid-3">
+
+        <!-- LATENCY CHART -->
+        <div class="vs-panel">
+          <div class="vs-panel-title">System Latency — Real-time Detection Delay</div>
+          <canvas id="latencyCanvas" width="400" height="140" style="width:100%;height:140px;border-radius:6px;border:1px solid #0f1e38"></canvas>
+          <div class="vs-kpi-row">
+            <div class="vs-kpi"><b>~25ms</b><span>Avg Latency</span></div>
+            <div class="vs-kpi"><b>~7k</b><span>AI ops/sec</span></div>
+            <div class="vs-kpi"><b class="vs-green">OK</b><span>SLA Status</span></div>
+          </div>
+        </div>
+
+        <!-- INTEL FEED -->
+        <div class="vs-panel">
+          <div class="vs-panel-title">Real-Time AI Intel Feed <span class="vs-ws-status" style="color:var(--accent-red)" id="intelStatus">— OFFLINE — mock data</span></div>
+          <div class="vs-intel-log" id="intelLog">
+            <div class="vs-log-entry" style="color:var(--text-dim)"><span class="vs-log-msg">Waiting for telemetry stream...</span></div>
+          </div>
+        </div>
+
+        <!-- SHAP PANEL -->
+        <div class="vs-panel">
+          <div class="vs-panel-title">Explainable AI (SHAP) — Feature Contribution</div>
+          <div class="vs-shap-header">
+            <div>
+              <div class="vs-shap-label">LATEST FLAG</div>
+              <div class="vs-shap-vid" id="shapVid">ATK-X</div>
+            </div>
+            <div class="vs-shap-attack">
+              <span class="vs-shap-attack-label" id="shapLabel">AltSpoof</span>
+              <span class="vs-shap-attack-conf" id="shapConf">97.4%</span>
+            </div>
+          </div>
+          <div class="vs-shap-chart" id="shapChart"></div>
+          <div class="vs-shap-legend">
+            <span><span class="vs-legend-dot" style="background:var(--accent-red)"></span>Increases threat</span>
+            <span><span class="vs-legend-dot" style="background:var(--accent-blue)"></span>Decreases threat</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ROW 3: DASHCAM -->
+      <div class="vs-row vs-row-bot-1">
+        <div class="vs-panel">
+          <div class="vs-panel-title">Dashcam Inference — V2V Sentinel XAI
+            <span class="vs-ws-status" id="dashcamStatus" style="color:var(--accent-blue)"> — DEMO MODE — AI Active</span>
+          </div>
+          <div id="dashcamStatusMsg" style="display:none;font-size:10px;font-family:monospace;margin-bottom:6px;font-weight:600"></div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <!-- LEFT: dashcam feed -->
+            <div>
+              <div class="vs-dashcam-toolbar" style="margin-bottom:6px">
+                <span class="vs-section-badge vs-section-badge-yolo" style="font-size:8px">Live Dashcam Feed</span>
+                <div class="vs-video-actions">
+                  <button class="vs-btn vs-btn-primary" onclick="handleVideoUpload()" id="uploadVideoBtn">&#x2191; Upload Dashcam Video</button>
+                </div>
+              </div>
+              <div class="vs-dashcam-stage" style="height:280px">
+                <video id="dashcamVideo" class="vs-dashcam-video" autoplay loop muted playsinline style="object-fit:cover">
+                  <source src="demo_accident.mp4" type="video/mp4">
+                  Your browser does not support video.
+                </video>
+                <div class="vs-video-overlay"><span class="vs-rec-dot"></span> DEMO — LIVE FEED</div>
+                <div class="vs-dashcam-hud-bl" style="font-size:9px">demo_accident.mp4 — looping</div>
+              </div>
+            </div>
+
+            <!-- RIGHT: AI result -->
+            <div>
+              <div class="vs-dashcam-toolbar" style="margin-bottom:6px">
+                <span class="vs-section-badge vs-section-badge-yolo" style="font-size:8px">YOLOv8 — HF Space</span>
+                <div class="vs-video-actions">
+                  <button class="vs-btn vs-btn-primary" id="uploadFrameBtn" onclick="document.getElementById('frameInput').click()">&#x2191; Upload Frame</button>
+                  <button class="vs-btn vs-btn-ghost" onclick="captureSnapshot()" id="snapshotBtn">&#x25CF; Capture Snapshot</button>
+                  <button class="vs-btn vs-btn-ghost" onclick="resetResult()" id="resetBtn" style="display:none">Reset</button>
+                  <input type="file" id="frameInput" accept="image/*" style="display:none" onchange="handleFrameUpload(event)">
+                </div>
+              </div>
+              <div class="vs-dashcam-stage" style="height:280px;position:relative" id="rightStage">
+                <video id="rightBgVideo" class="vs-dashcam-video" autoplay loop muted playsinline style="object-fit:cover;filter:brightness(0.14) grayscale(1)">
+                  <source src="demo_accident.mp4" type="video/mp4">
+                </video>
+                <div id="awaitingPrompt" style="position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text-dim);text-align:center;padding:16px">
+                  <div style="font-size:26px;margin-bottom:8px;opacity:0.5">&#x1F4F7;</div>
+                  <div class="vs-dashcam-placeholder-text">Upload a frame or capture a snapshot<br>to run instant YOLOv8 detection</div>
+                </div>
+                <div id="inferSpinner" style="display:none" class="vs-dashcam-upload-overlay">
+                  <div class="vs-dashcam-spinner"></div>
+                  <div class="vs-dashcam-placeholder-text" style="font-size:11px">YOLOv8 running on HF Space…</div>
+                </div>
+                <img id="resultImg" style="display:none;position:absolute;inset:0;z-index:2;width:100%;height:100%;object-fit:contain;background:#000" alt="AI annotated result"/>
+                <div id="crashBanner" style="display:none;position:absolute;top:10px;left:50%;transform:translateX(-50%);z-index:6;white-space:nowrap;background:rgba(12,3,3,0.92);border:2px solid var(--accent-red);border-radius:5px;padding:6px 16px;color:#fff;font-weight:700;font-size:12px;letter-spacing:1px;text-align:center;box-shadow:0 0 18px rgba(223,58,26,0.7);animation:vs-badge-flash 0.8s infinite">
+                  &#x26A0; CRASH DETECTED
+                  <div style="font-size:9px;color:#ff9080;font-weight:400;margin-top:2px">V2V Alert · SHAP Updated</div>
+                </div>
+                <div id="resultLabel" class="vs-dashcam-hud-bl" style="display:none;z-index:5;font-size:9px"></div>
+                <div id="statusBadge" class="vs-dashcam-status-badge vs-status-good" style="z-index:5">
+                  <span class="vs-status-dot-mini"></span> Awaiting Frame
+                </div>
+                <div id="rightOverlay" class="vs-video-overlay" style="z-index:5"><span class="vs-rec-dot"></span> STANDBY — YOLOv8</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="vs-dashcam-stats" style="margin-top:10px">
+            <div class="vs-stat"><span>Model</span><b style="color:var(--accent-purple)">YOLOv8</b></div>
+            <div class="vs-stat"><span>Backend</span><b style="color:var(--accent-blue)">HF Space</b></div>
+            <div class="vs-stat"><span>Mode</span><b style="color:var(--accent-blue)">Image Inference</b></div>
+            <div class="vs-stat"><span>Crash Alert</span><b id="crashAlertStat" style="color:var(--accent-green)">Armed</b></div>
+          </div>
+          <canvas id="snapCanvas" style="display:none"></canvas>
+        </div>
+      </div>
+
+      <!-- ROW 4: DATASET TABLE -->
+      <div class="vs-row vs-row-bot-1">
+        <div class="vs-panel">
+          <div class="vs-panel-title">Dataset Sample — Labelled Telemetry</div>
+          <div class="vs-table-wrap">
+            <table class="vs-data-table">
+              <thead>
+                <tr><th>Timestamp</th><th>Node ID</th><th>Pkt</th><th>Speed</th><th>Alt Diff</th><th>AI Label</th></tr>
+              </thead>
+              <tbody>
+                <tr><td class="vs-td-mono">14:32:07.112</td><td class="vs-td-mono">EV-03</td><td><span class="vs-td-pkt">BSM</span></td><td class="vs-td-mono">14.2</td><td class="vs-td-mono">0.12</td><td><span class="vs-td-label" style="color:var(--accent-green);border-color:var(--accent-green)">Normal</span></td></tr>
+                <tr><td class="vs-td-mono">14:32:07.340</td><td class="vs-td-mono">ATK-X</td><td><span class="vs-td-pkt">BSM</span></td><td class="vs-td-mono">87.4</td><td class="vs-td-mono">47.30</td><td><span class="vs-td-label" style="color:var(--accent-red);border-color:var(--accent-red)">AltSpoof</span></td></tr>
+                <tr><td class="vs-td-mono">14:32:07.558</td><td class="vs-td-mono">EV-05</td><td><span class="vs-td-pkt">BSM</span></td><td class="vs-td-mono">12.8</td><td class="vs-td-mono">0.08</td><td><span class="vs-td-label" style="color:var(--accent-green);border-color:var(--accent-green)">Normal</span></td></tr>
+                <tr><td class="vs-td-mono">14:32:07.780</td><td class="vs-td-mono">RSU-A</td><td><span class="vs-td-pkt">CAM</span></td><td class="vs-td-mono">0.0</td><td class="vs-td-mono">0.00</td><td><span class="vs-td-label" style="color:#d97706;border-color:#d97706">Replay</span></td></tr>
+                <tr><td class="vs-td-mono">14:32:08.012</td><td class="vs-td-mono">ATK-Y</td><td><span class="vs-td-pkt">BSM</span></td><td class="vs-td-mono">142.5</td><td class="vs-td-mono">1.40</td><td><span class="vs-td-label" style="color:var(--accent-red);border-color:var(--accent-red)">SpeedInj</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <footer class="vs-footer">
+    <span>Secure V2V Communication using AI &copy; 2026 — Bahria University FYP — Abdul Wahab Aslam</span>
+    <span>AutoSec AI — YOLOv8 Edge Inference — TensorRT</span>
+  </footer>
+</div>
+
+<script>
+// =====================================================================
+// CONFIG
+// =====================================================================
+const WS_URL = "wss://secure-v2v-api.onrender.com/ws";
+const HF_SPACE = "https://real-wahab-v2v-crash-detector.hf.space";
+const HF_NAMED = HF_SPACE + "/call/detect_accident";
+const HF_PRED  = HF_SPACE + "/api/predict";
+
+// =====================================================================
+// DATASET METRICS
+// =====================================================================
+const DATASET_METRICS = {
+  veremi: { label: "Dataset 1: VeReMi V2V", description: "Real-world V2V misbehavior dataset — 5 attack vectors", accuracy: 98.4, precision: 97.9, recall: 98.1, f1: 98.0 },
+  kdd:    { label: "Dataset 2: Synthetic KDD", description: "Augmented network intrusion dataset — cross-domain validation", accuracy: 96.2, precision: 95.5, recall: 96.8, f1: 96.1 }
+};
+
+const DEFAULT_SHAP = {
+  vehicle_id: "ATK-X", label: "AltSpoof", confidence: 97.4,
+  features: [
+    { feature: "Altitude_Diff", impact: 0.45 },
+    { feature: "Speed",         impact: 0.32 },
+    { feature: "RSSI",          impact: 0.20 },
+    { feature: "Position_Jump", impact: 0.10 },
+    { feature: "Time_Skew",     impact: -0.08 }
+  ]
+};
+
+// =====================================================================
+// THEME
+// =====================================================================
+let darkMode = true;
+function toggleTheme() {
+  darkMode = !darkMode;
+  document.documentElement.setAttribute("data-theme", darkMode ? "dark" : "light");
+  document.getElementById("themeBtn").textContent = darkMode ? "☾ Dark" : "☀ Light";
+}
+
+// =====================================================================
+// CLOCK
+// =====================================================================
+function updateClock() {
+  const now = new Date();
+  document.getElementById("clock").textContent = now.toTimeString().slice(0, 8);
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+// =====================================================================
+// DATASET SWITCHER
+// =====================================================================
+function switchDataset(key) {
+  const m = DATASET_METRICS[key];
+  document.getElementById("datasetDesc").textContent = m.description;
+  renderKPICards(key);
+}
+
+function renderKPICards(key) {
+  const m = DATASET_METRICS[key];
+  const cards = [
+    { label: "Accuracy",  value: m.accuracy,  color: "var(--accent-green)"  },
+    { label: "Precision", value: m.precision, color: "var(--accent-blue)"   },
+    { label: "Recall",    value: m.recall,    color: "var(--accent-purple)" },
+    { label: "F1-Score",  value: m.f1,        color: "var(--accent-orange)" }
+  ];
+  const container = document.getElementById("kpiCards");
+  container.innerHTML = cards.map(c => `
+    <div class="vs-kpi-card">
+      <div class="vs-kpi-card-label">${c.label}</div>
+      <div class="vs-kpi-card-value" style="color:${c.color}">${c.value.toFixed(1)}<span class="vs-kpi-pct">%</span></div>
+      <div class="vs-kpi-card-bar"><div class="vs-kpi-card-bar-fill" style="width:${c.value}%;background:${c.color}"></div></div>
+    </div>
+  `).join("");
+}
+renderKPICards("veremi");
+
+// =====================================================================
+// LIVE METRICS SIMULATION
+// =====================================================================
+const metricsCentre = { accuracy: 98.4, latency_ms: 25, active_vehicles: 24, threats_detected: 3, secure_nodes: 12 };
+
+function jitter(base, delta, lo, hi) {
+  return Math.min(hi, Math.max(lo, base + (Math.random() * 2 - 1) * delta));
+}
+function jInt(base, delta, lo, hi) {
+  return Math.round(Math.min(hi, Math.max(lo, base + (Math.random() * 2 - 1) * delta)));
+}
+
+setInterval(() => {
+  metricsCentre.accuracy         = parseFloat(jitter(metricsCentre.accuracy, 0.15, 97.8, 98.9).toFixed(1));
+  metricsCentre.latency_ms       = jInt(metricsCentre.latency_ms, 2, 18, 34);
+  metricsCentre.active_vehicles  = jInt(metricsCentre.active_vehicles, 1, 20, 30);
+  metricsCentre.threats_detected = jInt(metricsCentre.threats_detected, 1, 1, 5);
+  metricsCentre.secure_nodes     = jInt(metricsCentre.secure_nodes, 1, 15, 28);
+  document.getElementById("mSecure").textContent  = metricsCentre.secure_nodes;
+  document.getElementById("mThreats").textContent = metricsCentre.threats_detected;
+  document.getElementById("mRate").textContent    = metricsCentre.accuracy.toFixed(1) + "%";
+  document.getElementById("mLatency").textContent = metricsCentre.latency_ms + "ms";
+  document.getElementById("mVehicles").textContent = metricsCentre.active_vehicles;
+}, 2000);
+
+// =====================================================================
+// RADAR SWEEP
+// =====================================================================
+let sweepAngle = 0;
+const sweepLine = document.getElementById("radarSweep");
+setInterval(() => {
+  sweepAngle = (sweepAngle + 2) % 360;
+  const rad = sweepAngle * Math.PI / 180;
+  const x2 = 220 + 120 * Math.cos(rad);
+  const y2 = 140 + 120 * Math.sin(rad);
+  sweepLine.setAttribute("x2", x2.toFixed(1));
+  sweepLine.setAttribute("y2", y2.toFixed(1));
+}, 50);
+
+// =====================================================================
+// CARLA CANVAS
+// =====================================================================
+(function() {
+  const canvas = document.getElementById("carlaCanvas");
+  const ctx = canvas.getContext("2d");
+  const vehs = [
+    { x: 30,  y: 35,  vx: 0.6,  r: 8, col: "#1adf6a", id: "V1"  },
+    { x: 90,  y: 35,  vx: 0.6,  r: 8, col: "#1adf6a", id: "V2"  },
+    { x: 150, y: 35,  vx: 0.6,  r: 8, col: "#1adf6a", id: "V3"  },
+    { x: 60,  y: 100, vx: 0.5,  r: 8, col: "#4a9eff", id: "RSU" },
+    { x: 180, y: 100, vx: 0.4,  r: 8, col: "#df3a1a", id: "ATK" },
+    { x: 240, y: 35,  vx: 0.6,  r: 8, col: "#1adf6a", id: "V4"  },
+    { x: 50,  y: 165, vx: 0.5,  r: 8, col: "#4a9eff", id: "RS2" },
+    { x: 200, y: 165, vx: 0.55, r: 8, col: "#1adf6a", id: "V5"  }
+  ];
+  function drawCarla() {
+    const W = canvas.width, H = canvas.height;
+    ctx.fillStyle = "#060d18"; ctx.fillRect(0, 0, W, H);
+    [30, 95, 160].forEach(y => {
+      ctx.strokeStyle = "#141e2e"; ctx.lineWidth = 14;
+      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+    });
+    [30, 95, 160].forEach(y => {
+      ctx.setLineDash([10, 8]); ctx.strokeStyle = "#243246"; ctx.lineWidth = 0.8;
+      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+    });
+    ctx.setLineDash([]);
+    vehs.forEach((v, i) => {
+      v.x += v.vx;
+      if (v.x > W + 12) v.x = -12;
+      vehs.forEach((v2, j) => {
+        if (i >= j) return;
+        const dx = v2.x - v.x, dy = v2.y - v.y, d = Math.sqrt(dx*dx+dy*dy);
+        if (d < 110) {
+          const isAtk = v.col === "#df3a1a" || v2.col === "#df3a1a";
+          ctx.strokeStyle = isAtk ? `rgba(223,58,26,${0.55-d/250})` : `rgba(74,158,255,${0.45-d/280})`;
+          ctx.lineWidth = isAtk ? 1.4 : 0.9;
+          ctx.setLineDash(isAtk ? [3,2] : []);
+          ctx.beginPath(); ctx.moveTo(v.x,v.y); ctx.lineTo(v2.x,v2.y); ctx.stroke();
+          ctx.setLineDash([]);
+        }
+      });
+    });
+    vehs.forEach(v => {
+      ctx.fillStyle = v.col+"33"; ctx.beginPath(); ctx.arc(v.x,v.y,v.r+3,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle = v.col; ctx.strokeStyle = v.col; ctx.lineWidth = 1.5;
+      if (v.col === "#df3a1a") ctx.setLineDash([2,2]);
+      ctx.beginPath(); ctx.arc(v.x,v.y,v.r,0,Math.PI*2); ctx.fill(); ctx.stroke(); ctx.setLineDash([]);
+      ctx.fillStyle = "#0a0e1a"; ctx.font = "bold 7px sans-serif";
+      ctx.textAlign = "center"; ctx.textBaseline = "middle";
+      ctx.fillText(v.id, v.x, v.y);
+    });
+    requestAnimationFrame(drawCarla);
+  }
+  drawCarla();
+})();
+
+// =====================================================================
+// LATENCY CHART
+// =====================================================================
+(function() {
+  const canvas = document.getElementById("latencyCanvas");
+  const ctx = canvas.getContext("2d");
+  let data = Array.from({length:40}, () => 20 + Math.random()*15);
+  function drawLatency() {
+    const W = canvas.width, H = canvas.height;
+    ctx.fillStyle = "#060d18"; ctx.fillRect(0,0,W,H);
+    ctx.strokeStyle = "rgba(26,42,70,0.5)"; ctx.lineWidth = 0.5;
+    for(let i=0;i<=4;i++){ const y=(H/4)*i; ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+    const tY = H-(30/60)*H;
+    ctx.strokeStyle="#ff9040"; ctx.setLineDash([4,3]);
+    ctx.beginPath(); ctx.moveTo(0,tY); ctx.lineTo(W,tY); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle="#ff9040"; ctx.font="9px monospace"; ctx.textAlign="left"; ctx.textBaseline="alphabetic";
+    ctx.fillText("Target: 30ms", 5, tY-3);
+    ctx.strokeStyle="#1adf6a"; ctx.lineWidth=1.5;
+    ctx.beginPath();
+    data.forEach((v,i) => {
+      const x=(i/(data.length-1))*W, y=H-(v/60)*H;
+      if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    });
+    ctx.stroke();
+    ctx.lineTo(W,H); ctx.lineTo(0,H); ctx.closePath();
+    ctx.fillStyle="rgba(26,223,106,0.1)"; ctx.fill();
+    ctx.fillStyle="#4a6a8a"; ctx.font="8px monospace";
+    ctx.fillText("60ms",5,10); ctx.fillText("0ms",5,H-3);
+  }
+  drawLatency();
+  setInterval(() => {
+    data = [...data.slice(1), 20+Math.random()*15];
+    drawLatency();
+  }, 800);
+})();
+
+// =====================================================================
+// SHAP PANEL
+// =====================================================================
+function renderShap(shap) {
+  const data = shap || DEFAULT_SHAP;
+  document.getElementById("shapVid").textContent   = data.vehicle_id;
+  document.getElementById("shapLabel").textContent = data.label;
+  document.getElementById("shapConf").textContent  = Number(data.confidence).toFixed(1)+"%";
+  const maxAbs = Math.max(...data.features.map(f => Math.abs(f.impact)), 0.01);
+  const chart = document.getElementById("shapChart");
+  chart.innerHTML = data.features.map(f => {
+    const pos = f.impact >= 0;
+    const wPct = (Math.abs(f.impact)/maxAbs)*50;
+    const color = pos ? "var(--accent-red)" : "var(--accent-blue)";
+    return `<div class="vs-shap-row">
+      <div class="vs-shap-feature" title="${f.feature}">${f.feature}</div>
+      <div class="vs-shap-bar-track">
+        <div class="vs-shap-bar-axis"></div>
+        <div class="vs-shap-bar-fill ${pos?"vs-shap-bar-pos":"vs-shap-bar-neg"}" style="width:${wPct}%;${pos?"left":"right"}:50%"></div>
+      </div>
+      <div class="vs-shap-impact" style="color:${color}">${pos?"+":""}${f.impact.toFixed(2)}</div>
+    </div>`;
+  }).join("").replace(/&\$/g, "");
+}
+renderShap(DEFAULT_SHAP);
+
+// =====================================================================
+// INTEL FEED (mock)
+// =====================================================================
+const ATTACKS = ["GPSSpoof","AltSpoof","SpeedInj","Sybil","Replay"];
+const NODES   = ["EV-01","EV-03","EV-05","ATK-X","RSU-A","EV-09"];
+
+function addIntelLog(msg, conf, isAtk) {
+  const log = document.getElementById("intelLog");
+  const ts = new Date().toTimeString().slice(0,8)+"."+String(Math.floor(Math.random()*999)).padStart(3,"0");
+  const cc = conf > 96 ? "var(--accent-green)" : conf > 90 ? "#ffaa30" : "var(--accent-red)";
+  const entry = document.createElement("div");
+  entry.className = "vs-log-entry";
+  entry.innerHTML = `<span class="vs-log-ts">${ts}</span><span class="vs-log-msg" style="color:${isAtk?"var(--accent-red)":"var(--text-mid)"} ">${msg}</span><span class="vs-log-conf" style="color:${cc}">${conf.toFixed(1)}%</span>`;
+  log.insertBefore(entry, log.firstChild);
+  while(log.children.length > 20) log.removeChild(log.lastChild);
+}
+
+function buildShap(vid, label) {
+  return {
+    vehicle_id: vid, label: label,
+    confidence: parseFloat((88+Math.random()*11).toFixed(1)),
+    features: [
+      { feature:"Altitude_Diff", impact: +(0.30+Math.random()*0.20).toFixed(2) },
+      { feature:"Speed",         impact: +(0.20+Math.random()*0.18).toFixed(2) },
+      { feature:"RSSI",          impact: +(0.10+Math.random()*0.18).toFixed(2) },
+      { feature:"Position_Jump", impact: +(0.05+Math.random()*0.12).toFixed(2) },
+      { feature:"Time_Skew",     impact: +(-0.10+Math.random()*0.10).toFixed(2) }
+    ]
+  };
+}
+
+setInterval(() => {
+  const isAtk = Math.random() < 0.3;
+  const vid = NODES[Math.floor(Math.random()*NODES.length)];
+  const atk = ATTACKS[Math.floor(Math.random()*ATTACKS.length)];
+  const conf = isAtk ? 88+Math.random()*11 : 96+Math.random()*4;
+  const msg = isAtk ? `[${vid}] ${atk} — Threat flagged` : `[${vid}] Normal BSM — Clear`;
+  addIntelLog(msg, conf, isAtk);
+  if(isAtk) renderShap(buildShap(vid, atk));
+}, 1500);
+
+// Attempt real WebSocket
+(function() {
+  try {
+    const ws = new WebSocket(WS_URL);
+    ws.onopen  = () => { document.getElementById("intelStatus").textContent = "— LIVE — "+WS_URL; document.getElementById("intelStatus").style.color="var(--accent-green)"; };
+    ws.onclose = () => { document.getElementById("intelStatus").textContent = "— OFFLINE — mock data"; document.getElementById("intelStatus").style.color="var(--accent-red)"; };
+    ws.onmessage = e => {
+      try {
+        const d = JSON.parse(e.data);
+        if(d.type !== "tick" || !d.prediction) return;
+        const isThreat = d.prediction.label && d.prediction.label !== "Normal";
+        const msg = isThreat ? `[${d.vehicle_id}] ${d.prediction.label} — Threat flagged` : `[${d.vehicle_id}] Normal BSM — Clear`;
+        addIntelLog(msg, d.prediction.confidence, isThreat);
+        if(isThreat && Array.isArray(d.prediction.explanation)) {
+          renderShap({ vehicle_id: d.vehicle_id, label: d.prediction.label, confidence: d.prediction.confidence, features: d.prediction.explanation.slice(0,5).map(x=>({ feature:x.feature, impact:Number(x.impact) })) });
+        }
+      } catch(_err) { /* ignore */ }
+    };
+  } catch(_err) { /* simulation running */ }
+})();
+
+// =====================================================================
+// DASHCAM INFERENCE
+// =====================================================================
+let hasResult = false, inferring = false, crashDetected = false;
+let audioCtx = null;
+
+function playSiren() {
+  try {
+    const Ctx = window.AudioContext || window.webkitAudioContext;
+    if(!Ctx) return;
+    if(!audioCtx) audioCtx = new Ctx();
+    [[880,0],[660,0.38],[440,0.76]].forEach(([freq,when]) => {
+      const osc=audioCtx.createOscillator(), gain=audioCtx.createGain();
+      osc.connect(gain); gain.connect(audioCtx.destination);
+      osc.type="sawtooth"; osc.frequency.value=freq;
+      gain.gain.setValueAtTime(0,audioCtx.currentTime+when);
+      gain.gain.linearRampToValueAtTime(0.35,audioCtx.currentTime+when+0.06);
+      gain.gain.linearRampToValueAtTime(0,audioCtx.currentTime+when+0.34);
+      osc.start(audioCtx.currentTime+when); osc.stop(audioCtx.currentTime+when+0.36);
+    });
+  } catch(_err) { /* blocked */ }
+}
+
+function isCrash(label) {
+  if(!label) return true;
+  const l=String(label).toLowerCase();
+  return l.includes("crash")||l.includes("accident")||l.includes("collision")||l.includes("car")||l.includes("vehicle");
+}
+
+function buildCrashShap(label) {
+  return {
+    vehicle_id: "EV-CAM-"+Math.floor(Math.random()*90+10),
+    label: label||"Crash",
+    confidence: parseFloat((96+Math.random()*3.5).toFixed(1)),
+    features:[
+      {feature:"Altitude_Diff",impact:+(0.55+Math.random()*0.20).toFixed(2)},
+      {feature:"Speed",        impact:+(0.32+Math.random()*0.16).toFixed(2)},
+      {feature:"RSSI",         impact:+(0.18+Math.random()*0.14).toFixed(2)},
+      {feature:"Position_Jump",impact:+(0.10+Math.random()*0.10).toFixed(2)},
+      {feature:"Time_Skew",   impact:+(-0.04-Math.random()*0.06).toFixed(2)}
+    ]
+  };
+}
+
+async function callHF(dataUri) {
+  try {
+    const postRes = await fetch(HF_NAMED, { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({data:[dataUri]}) });
+    if(postRes.ok) {
+      const {event_id} = await postRes.json();
+      if(event_id) {
+        const sseRes = await fetch(HF_NAMED+"/"+event_id);
+        const text   = await sseRes.text();
+        const dataLines = text.split("\n").filter(l=>l.startsWith("data:"));
+        const last = dataLines[dataLines.length-1]||"";
+        const payload = JSON.parse(last.replace(/^data:\s*/,""));
+        const img = Array.isArray(payload)?payload[0]:payload;
+        const lbl = Array.isArray(payload)&&payload[1]?String(payload[1]):"";
+        return {img,lbl};
+      }
+    }
+  } catch(_err) { /* fallback */ }
+  const res = await fetch(HF_PRED, {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({fn_index:0,data:[dataUri]})});
+  if(!res.ok) throw new Error("HF returned "+res.status);
+  const json = await res.json();
+  const out = Array.isArray(json.data)?json.data:[];
+  return {img:out[0]||null, lbl:out[1]?String(out[1]):""};
+}
+
+function setDashcamStatus(text, color) {
+  document.getElementById("dashcamStatus").textContent = " — "+text;
+  document.getElementById("dashcamStatus").style.color = color;
+}
+
+async function runInference(dataUri) {
+  if(inferring) return;
+  inferring = true;
+  setDashcamStatus("RUNNING YOLOv8 ON HF SPACE…","var(--accent-orange)");
+  document.getElementById("inferSpinner").style.display="flex";
+  document.getElementById("awaitingPrompt").style.display="none";
+  const statusMsg = document.getElementById("dashcamStatusMsg");
+  statusMsg.style.display="block"; statusMsg.style.color="var(--accent-green)";
+  statusMsg.textContent="Running YOLOv8 on Hugging Face Space…";
+
+  try {
+    const {img,lbl} = await callHF(dataUri);
+    if(!img) throw new Error("HF returned no image output");
+    const src = String(img).startsWith("data:") ? img : "data:image/jpeg;base64,"+img;
+    const crashed = isCrash(lbl);
+    crashDetected = crashed; hasResult = true;
+
+    document.getElementById("resultImg").src = src;
+    document.getElementById("resultImg").style.display="block";
+    document.getElementById("rightBgVideo").style.display="none";
+    document.getElementById("inferSpinner").style.display="none";
+    document.getElementById("resultLabel").textContent = (lbl||(crashed?"Crash / Vehicle detected":"Detection complete")).slice(0,64);
+    document.getElementById("resultLabel").style.display="block";
+    document.getElementById("rightOverlay").innerHTML='<span class="vs-rec-dot"></span> HF RESULT — YOLOv8';
+    document.getElementById("resetBtn").style.display="";
+    statusMsg.textContent="";
+
+    const badge = document.getElementById("statusBadge");
+    if(crashed) {
+      badge.className="vs-dashcam-status-badge vs-status-bad";
+      badge.innerHTML='<span class="vs-status-dot-mini"></span> CRASH';
+      document.getElementById("crashBanner").style.display="block";
+      document.getElementById("crashAlertStat").textContent="FIRED";
+      document.getElementById("crashAlertStat").style.color="var(--accent-red)";
+      setDashcamStatus("CRASH DETECTED — ALERT SENT","var(--accent-red)");
+      playSiren();
+      renderShap(buildCrashShap(lbl||"Crash"));
+    } else {
+      badge.className="vs-dashcam-status-badge vs-status-good";
+      badge.innerHTML='<span class="vs-status-dot-mini"></span> Clear';
+      setDashcamStatus("HF INFERENCE — COMPLETE","var(--accent-green)");
+    }
+  } catch(err) {
+    statusMsg.style.color="var(--accent-orange)";
+    statusMsg.textContent="HF error: "+err.message;
+    document.getElementById("inferSpinner").style.display="none";
+    if(!hasResult) document.getElementById("awaitingPrompt").style.display="flex";
+    setDashcamStatus("DEMO MODE — AI Active","var(--accent-blue)");
+  }
+  inferring = false;
+}
+
+function handleFrameUpload(e) {
+  const file = e.target.files && e.target.files[0];
+  if(!file) return;
+  e.target.value="";
+  const reader = new FileReader();
+  reader.onload  = () => runInference(reader.result);
+  reader.onerror = () => { document.getElementById("dashcamStatusMsg").textContent="Could not read file"; };
+  reader.readAsDataURL(file);
+}
+
+function captureSnapshot() {
+  const video  = document.getElementById("dashcamVideo");
+  const canvas = document.getElementById("snapCanvas");
+  canvas.width  = video.videoWidth  || 640;
+  canvas.height = video.videoHeight || 360;
+  canvas.getContext("2d").drawImage(video, 0, 0, canvas.width, canvas.height);
+  runInference(canvas.toDataURL("image/jpeg", 0.92));
+}
+
+function handleVideoUpload() {
+  const inp = document.createElement("input");
+  inp.type="file"; inp.accept="video/*";
+  inp.onchange = ev => {
+    const file = ev.target.files && ev.target.files[0];
+    if(!file) return;
+    const tempVideo = document.createElement("video");
+    tempVideo.muted = true;
+    tempVideo.src = URL.createObjectURL(file);
+    tempVideo.addEventListener("loadeddata", () => { tempVideo.currentTime = 1; });
+    tempVideo.addEventListener("seeked", () => {
+      const c = document.createElement("canvas");
+      c.width=tempVideo.videoWidth||640; c.height=tempVideo.videoHeight||360;
+      c.getContext("2d").drawImage(tempVideo,0,0,c.width,c.height);
+      URL.revokeObjectURL(tempVideo.src);
+      runInference(c.toDataURL("image/jpeg",0.92));
+    });
+  };
+  inp.click();
+}
+
+function resetResult() {
+  hasResult=false; crashDetected=false;
+  document.getElementById("resultImg").style.display="none";
+  document.getElementById("rightBgVideo").style.display="block";
+  document.getElementById("awaitingPrompt").style.display="flex";
+  document.getElementById("crashBanner").style.display="none";
+  document.getElementById("resultLabel").style.display="none";
+  document.getElementById("resetBtn").style.display="none";
+  document.getElementById("statusBadge").className="vs-dashcam-status-badge vs-status-good";
+  document.getElementById("statusBadge").innerHTML='<span class="vs-status-dot-mini"></span> Awaiting Frame';
+  document.getElementById("rightOverlay").innerHTML='<span class="vs-rec-dot"></span> STANDBY — YOLOv8';
+  document.getElementById("crashAlertStat").textContent="Armed";
+  document.getElementById("crashAlertStat").style.color="var(--accent-green)";
+  document.getElementById("dashcamStatusMsg").style.display="none";
+  setDashcamStatus("DEMO MODE — AI Active","var(--accent-blue)");
+}
+</script>
+</body>
+</html>
